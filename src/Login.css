@@ -1,0 +1,9 @@
+.inputDivMail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.containerButton {
+  margin-top: 20px;
+}
