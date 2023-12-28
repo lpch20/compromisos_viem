@@ -19,6 +19,7 @@ function App() {
   const [cartera, setCartera] = useState("");
   const [checkCdc, setCheckCdc] = useState(false);
   const [checkCreditel, setCheckCreditel] = useState(true);
+  const [inactiveTime, setInactiveTime] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -98,6 +99,7 @@ function App() {
     setCheckCreditel((prevCheckCreditel) => !prevCheckCreditel);
   };
 
+ 
   const exit = () =>{
     localStorage.clear()
     navigate("/");
@@ -108,6 +110,39 @@ function App() {
       navigate("/");
     }
   }, [checkCdc, checkCreditel]);
+
+  useEffect(() => {
+    // Función para reiniciar el contador de inactividad
+    const resetInactiveTime = () => setInactiveTime(0);
+
+    // Asigna el evento de movimiento del mouse para reiniciar el contador
+    window.addEventListener("mousemove", resetInactiveTime);
+    // Asigna el evento de pulsación de teclas para reiniciar el contador
+    window.addEventListener("keydown", resetInactiveTime);
+
+    // Función para manejar el temporizador de inactividad
+    const handleInactiveTimer = () => {
+      setInactiveTime((prevInactiveTime) => prevInactiveTime + 1);
+
+      // Si la inactividad es mayor o igual a 15 minutos (900 segundos), realiza la acción deseada
+      if (inactiveTime >= 900) {
+        // Limpia el Local Storage y redirige al usuario a la página de inicio
+        localStorage.clear();
+        navigate("/");
+      }
+    };
+
+    // Establece un temporizador para verificar la inactividad cada segundo
+    const timerId = setInterval(handleInactiveTimer, 1000);
+
+    // Limpia los eventos y el temporizador al desmontar el componente
+    return () => {
+      window.removeEventListener("mousemove", resetInactiveTime);
+      window.removeEventListener("keydown", resetInactiveTime);
+      clearInterval(timerId);
+    };
+  }, [inactiveTime]);
+
 
   return (
     <>
