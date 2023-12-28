@@ -114,7 +114,7 @@ function App() {
   useEffect(() => {
     // Función para reiniciar el contador de inactividad
     const resetInactiveTime = () => setInactiveTime(0);
-
+ 
     // Asigna el evento de movimiento del mouse para reiniciar el contador
     window.addEventListener("mousemove", resetInactiveTime);
     // Asigna el evento de pulsación de teclas para reiniciar el contador
