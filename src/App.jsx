@@ -4,6 +4,8 @@ import { getUsers } from "../API/GET_users";
 import { changeUser } from "../API/PUT_users";
 import { deleteAcuerdo } from "../API/DELETE_users";
 import { useNavigate } from "react-router-dom";
+import Hearder from "./components/Hearder";
+import Swal from "sweetalert2";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -14,7 +16,7 @@ function App() {
   const [loading2, setLoading2] = useState(false);
   const [loading3, setLoading3] = useState(false);
   const [montoDeAcuerdo, setMontoDeAcuerdo] = useState("");
-  const [valueToChange, setValueToChange] = useState(0);
+  const [valueToChange, setValueToChange] = useState();
   const [agenteAdd, setAgente] = useState("");
   const [cartera, setCartera] = useState("");
   const [checkCdc, setCheckCdc] = useState(false);
@@ -52,6 +54,7 @@ function App() {
       setUserData(null);
     } finally {
       setLoading(false);
+  
     }
   };
 
@@ -75,6 +78,12 @@ function App() {
       console.error(error);
     } finally {
       setLoading2(false);
+      Swal.fire({
+        title: 'Compromiso Cargado',
+        text: 'Para comprobar si el compromiso quedo cargado correctamente, coloque la cedula del cliente y presione buscar nuevamente, podra ver en el campo "monto de acuerdo" el acuerdo que usted ingreso',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      })
     }
   };
 
@@ -88,6 +97,13 @@ function App() {
       console.error(error);
     } finally {
       setLoading3(false);
+      Swal.fire({
+        title: 'Compromiso eliminado',
+        text: 'Para comprobar si el compromiso quedo eliminado correctamente, coloque la cedula del cliente y presione buscar nuevamente, podra ver en el campo "monto de acuerdo" que existia, no se visualiza mas',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      })
+
     }
   };
 
@@ -99,22 +115,24 @@ function App() {
     setCheckCreditel((prevCheckCreditel) => !prevCheckCreditel);
   };
 
- 
-  const exit = () =>{
-    localStorage.clear()
-    navigate("/");
-  }
+  const everCheck = () => {
+    return !checkCdc && !checkCreditel;
+  };
 
   useEffect(() => {
     if (!token) {
       navigate("/");
+    }
+
+    if (everCheck()) {
+      setCheckCreditel(true);
     }
   }, [checkCdc, checkCreditel]);
 
   useEffect(() => {
     // Función para reiniciar el contador de inactividad
     const resetInactiveTime = () => setInactiveTime(0);
- 
+
     // Asigna el evento de movimiento del mouse para reiniciar el contador
     window.addEventListener("mousemove", resetInactiveTime);
     // Asigna el evento de pulsación de teclas para reiniciar el contador
@@ -143,187 +161,226 @@ function App() {
     };
   }, [inactiveTime]);
 
-
   return (
     <>
       <div className="container">
-        <form className="containerForm" onSubmit={searchUsers}>
-          <h3>Buscar Cedula</h3>
-          <input
-            id="ciInput"
-            type="number"
-            value={cedula}
-            onChange={handleChange}
-          />
+        <Hearder></Hearder>
+        <section className="allItems">
+          <div className="forms">
+            <form className="containerForm" onSubmit={searchUsers}>
+              <div className="sectionOfModifyClient">
+                <div className="searchCedula">
+                  <div className="subClassSearchCi">
+                    <h3>Buscar Cedula</h3>
+                    <input
+                      id="ciInput"
+                      type="number"
+                      value={cedula}
+                      onChange={handleChange}
+                    />
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Buscando..." : "Buscar"}
-          </button>
+                    <button type="submit" disabled={loading}>
+                      {loading ? "Buscando..." : "Buscar"}
+                    </button>
+                  </div>
+                  <div className="agentCharge">
+                    <h3>Cobrador que carga el compromiso</h3>
+                    <input
+                      value={agenteAdd}
+                      onChange={handleAgente}
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
 
-          {userData && (
-            <div>
-              {cartera.includes("CREDITEL") &&
-              cartera.includes("CREDITO DE LA CASA") &&
-              checkCdc &&
-              checkCreditel ? (
-                <div>
-                  <p>
-                    <b>Cedula encontrada:</b> {userData.cedula}
-                  </p>
-                  <p>
-                    <b>Nombre:</b> {userData.nombre}
-                  </p>
-                  <p>
-                    <b>Contado CDC + Creditel:</b>
-                    {+userData.contadoCdc + +userData.contadoCreditel}
-                  </p>
-                  <p>
-                    <b>Financiar Creditel + CDC:</b>{" "}
-                    {+userData.financiarCreditel + +userData.financiarCdc}
-                  </p>
-                  <p>
-                    <b>Monto de acuerdo CDC + Creditel:</b>{" "}
-                    {userData.monto_de_acuerdo}
-                  </p>
-                </div>
-              ) : cartera.includes("CREDITEL") &&
-                cartera.includes("CREDITO DE LA CASA") &&
-                checkCreditel &&
-                !checkCdc ? (
-                <div>
-                  <p>
-                    <b>Cedula encontrada:</b> {userData.cedula}
-                  </p>
-                  <p>
-                    <b>Nombre:</b> {userData.nombre}
-                  </p>
-                  <p>
-                    <b>Contado Creditel:</b>
-                    {+userData.contadoCreditel}
-                  </p>
-                  <p>
-                    <b>Financiar Creditel:</b> {+userData.financiarCreditel}
-                  </p>
-                  <p>
-                    <b>Monto de acuerdo Creditel:</b>{" "}
-                    {userData.monto_de_acuerdo}
-                  </p>
-                </div>
-              ) : cartera.includes("CREDITEL") &&
+            <form
+              className="containerFormAgentAdd"
+              onSubmit={addAgenteAndChangeUserData}
+            >
+              <div className="itemsFormAgentAdd">
+                <h3>Monto arreglado en compromiso</h3>
+                <input
+                  value={valueToChange}
+                  onChange={handleChangeUpdate}
+                  type="number"
+                />
+
+                {!userData || valueToChange === 0 || !agenteAdd ? (
+                  <button disabled>
+                    {loading2 ? "Cargando Convenio....." : "Cargar Convenio"}
+                  </button>
+                ) : (
+                  <button>
+                    {loading2 ? "Cargando Convenio....." : "Cargar Convenio"}
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+          <div className="sectionOfVisualData">
+            <h2>DATOS DEL CLIENTE</h2>
+            {userData && (
+              <div>
+                {cartera.includes("CREDITEL") &&
                 cartera.includes("CREDITO DE LA CASA") &&
                 checkCdc &&
-                !checkCreditel ? (
-                <div>
-                  <p>
-                    <b>Cedula encontrada:</b> {userData.cedula}
-                  </p>
-                  <p>
-                    <b>Nombre:</b> {userData.nombre}
-                  </p>
-                  <p>
-                    <b>Contado Cdc:</b>
-                    {+userData.contadoCdc}
-                  </p>
-                  <p>
-                    <b>Financiar Cdc:</b> {+userData.financiarCdc}
-                  </p>
-                  <p>
-                    <b>Monto de acuerdo Cdc:</b> {userData.monto_de_acuerdo}
-                  </p>
-                </div>
-              ) : cartera.includes("CREDITEL") ? (
-                <div>
-                  <p>
-                    <b>Cedula encontrada:</b> {userData.cedula}
-                  </p>
-                  <p>
-                    <b>Nombre:</b> {userData.nombre}
-                  </p>
-                  <p>
-                    <b>Contado Creditel:</b>
-                    {+userData.contadoCreditel}
-                  </p>
-                  <p>
-                    <b>Financiar Creditel:</b> {+userData.financiarCreditel}
-                  </p>
-                  <p>
-                    <b>Monto de acuerdo Creditel:</b>{" "}
-                    {userData.monto_de_acuerdo}
-                  </p>
-                </div>
-              ) : cartera.includes("CREDITO DE LA CASA") ? (
-                <div>
-                  <p>
-                    <b>Cedula encontrada:</b> {userData.cedula}
-                  </p>
-                  <p>
-                    <b>Nombre:</b> {userData.nombre}
-                  </p>
-                  <p>
-                    <b>Contado CDC:</b>
-                    {+userData.contadoCdc}
-                  </p>
-                  <p>
-                    <b>Financiar CDC:</b> {+userData.financiarCdc}
-                  </p>
-                  <p>
-                    <b>Monto de acuerdo CDC:</b> {userData.monto_de_acuerdo}
-                  </p>
-                </div>
-              ) : null}
-            </div>
-          )}
-          {cartera.includes("CREDITEL") &&
-          cartera.includes("CREDITO DE LA CASA") ? (
-            <div>
-              <label htmlFor="">Credito de la Casa</label>
-              <input
-                checked={checkCdc}
-                onChange={handleCheckboxChangeCdc}
-                type="checkbox"
-              />
-              <label htmlFor="">Creditel</label>
-              <input
-                checked={checkCreditel}
-                onChange={handleCheckboxChangeCreditel}
-                type="checkbox"
-              />
-            </div>
-          ) : null}
-        </form>
-        <form className="containerForm" onSubmit={addAgenteAndChangeUserData}>
-          <h3>Agente que carga el compromiso</h3>
-          <input value={agenteAdd} onChange={handleAgente} type="text" />
+                checkCreditel ? (
+                  <div>
+                    <p>
+                      <b>Cedula encontrada:</b> {userData.cedula}
+                    </p>
+                    <p>
+                      <b>Nombre:</b> {userData.nombre}
+                    </p>
+                    <p>
+                      <b>Contado CDC + Creditel:</b>
+                      {" $" +
+                        (
+                          Number(userData.contadoCdc) +
+                          Number(userData.contadoCreditel)
+                        ).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Financiar Creditel + CDC:</b>
+                      {" $" +
+                        (
+                          Number(userData.financiarCreditel) +
+                          Number(userData.financiarCdc)
+                        ).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Monto de acuerdo CDC + Creditel:</b>{" "}
+                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                    </p>
+                  </div>
+                ) : cartera.includes("CREDITEL") &&
+                  cartera.includes("CREDITO DE LA CASA") &&
+                  checkCreditel &&
+                  !checkCdc ? (
+                  <div>
+                    <p>
+                      <b>Cedula encontrada:</b> {userData.cedula}
+                    </p>
+                    <p>
+                      <b>Nombre:</b> {userData.nombre}
+                    </p>
+                    <p>
+                      <b>Contado Creditel:</b>
+                      {" $" + Number(userData.contadoCreditel).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Financiar Creditel:</b>{" "}
+                      {" $" + Number(userData.financiarCreditel).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Monto de acuerdo Creditel:</b>{" "}
+                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                    </p>
+                  </div>
+                ) : cartera.includes("CREDITEL") &&
+                  cartera.includes("CREDITO DE LA CASA") &&
+                  checkCdc &&
+                  !checkCreditel ? (
+                  <div>
+                    <p>
+                      <b>Cedula encontrada:</b> {userData.cedula}
+                    </p>
+                    <p>
+                      <b>Nombre:</b> {userData.nombre}
+                    </p>
+                    <p>
+                      <b>Contado Cdc:</b>
+                      {" $" + Number(userData.contadoCdc).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Financiar Cdc:</b>{" "}
+                      {" $" + Number(userData.financiarCdc).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Monto de acuerdo Cdc:</b>{" "}
+                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                    </p>
+                  </div>
+                ) : cartera.includes("CREDITEL") ? (
+                  <div>
+                    <p>
+                      <b>Cedula encontrada:</b> {userData.cedula}
+                    </p>
+                    <p>
+                      <b>Nombre:</b> {userData.nombre}
+                    </p>
+                    <p>
+                      <b>Contado Creditel:</b>
+                      {" $" + Number(userData.contadoCreditel).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Financiar Creditel:</b>{" "}
+                      {" $" + Number(userData.financiarCreditel).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Monto de acuerdo Creditel:</b>
+                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                    </p>
+                  </div>
+                ) : cartera.includes("CREDITO DE LA CASA") ? (
+                  <div>
+                    <p>
+                      <b>Cedula encontrada:</b> {userData.cedula}
+                    </p>
+                    <p>
+                      <b>Nombre:</b> {userData.nombre}
+                    </p>
+                    <p>
+                      <b>Contado CDC:</b>
+                      {" $" + Number(userData.contadoCdc).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Financiar CDC:</b>{" "}
+                      {" $" + Number(userData.financiarCdc).toFixed(0)}
+                    </p>
+                    <p>
+                      <b>Monto de acuerdo CDC:</b>{" "}
+                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            )}
+            {cartera.includes("CREDITEL") &&
+            cartera.includes("CREDITO DE LA CASA") ? (
+              <div>
+                <label htmlFor="">Credito de la Casa</label>
+                <input
+                  checked={checkCdc}
+                  onChange={handleCheckboxChangeCdc}
+                  type="checkbox"
+                />
+                <label htmlFor="">Creditel</label>
+                <input
+                  checked={checkCreditel}
+                  onChange={handleCheckboxChangeCreditel}
+                  type="checkbox"
+                />
+              </div>
+            ) : null}
 
-          <h3>Monto arreglado en compromiso</h3>
-          <input
-            value={valueToChange}
-            onChange={handleChangeUpdate}
-            type="number"
-          />
-
-          {!userData || valueToChange === 0 || !agenteAdd ? (
-            <button disabled>
-              {loading2 ? "Cargando Convenio....." : "Cargar Convenio"}
-            </button>
-          ) : (
-            <button>
-              {loading2 ? "Cargando Convenio....." : "Cargar Convenio"}
-            </button>
-          )}
-        </form>
-
-        {montoDeAcuerdo === null || montoDeAcuerdo < 1 ? (
-          <button className="clearButton" onClick={deleteAcuerdoData} disabled>
-            {loading3 ? "Eliminando....." : "Eliminar Convenio"}
-          </button>
-        ) : (
-          <button className="clearButton" onClick={deleteAcuerdoData}>
-            {loading3 ? "Eliminando....." : "Eliminar Convenio"}
-          </button>
-        )}
-
-        <button onClick={exit}>SALIR</button>
+            {montoDeAcuerdo === null || montoDeAcuerdo < 1 ? (
+              <button
+                className="clearButton"
+                onClick={deleteAcuerdoData}
+                disabled
+              >
+                {loading3 ? "Eliminando....." : "Eliminar Convenio"}
+              </button>
+            ) : (
+              <button className="clearButton" onClick={deleteAcuerdoData}>
+                {loading3 ? "Eliminando....." : "Eliminar Convenio"}
+              </button>
+            )}
+          </div>
+        </section>
       </div>
     </>
   );

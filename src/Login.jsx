@@ -93,6 +93,7 @@ function Login() {
 
   return (
     <div className="registerBody">
+      <img src="/images/logo_viem.png" alt="" />
       <main>
         <form action="" onSubmit={handleSubmit}>
           <div className="inputMailType">

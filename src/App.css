@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -41,12 +40,124 @@
   color: #888;
 }
 
-.containerForm{
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* .containerForm{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 80px;
+} */
+
+.containerFormAgentAdd{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: flex-start;
+  max-width: 200px;
+}
+
+.itemsFormAgentAdd{
+  align-items: center;
+  background-color: #5f01d1;
+  border-radius: 20px;
+  box-shadow: 20px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.itemsFormAgentAdd button{
+  margin-top: 20px;
+}
+
+.itemsFormAgentAdd input{
+  border-radius: 5px;
 }
 
 .clearButton{
   margin-top: 20px;
+}
+
+.searchCedula{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  max-width: 200px;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.subClassSearchCi{
+  background-color: #5f01d1;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.subClassSearchCi input{
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.subClassSearchCi button{
+  width: 180px;
+}
+
+.agentCharge{
+  background-color: #5f01d1;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.agentCharge input {
+  border-radius: 5px;
+}
+
+.sectionOfModifyClient{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+}
+
+.sectionOfVisualData{
+  background-color: azure;
+  color: black;
+  width: 400px;
+  height: 500px;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.forms{
+  display: flex;
+  flex-direction: column;
+}
+
+.allItems{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin: 0;
 }
