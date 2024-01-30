@@ -128,6 +128,7 @@ input[type="number"] {
 
 .agentCharge input {
   border-radius: 5px;
+  color: white;
 }
 
 .sectionOfModifyClient{
