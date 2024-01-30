@@ -7,7 +7,6 @@ export const changeUser = async (cedula, valueToChange ,cartera, checkCdc, check
       headers: {
         Authorization: token ,
         'Access-Control-Allow-Origin': '*',
-
       },
     });
 

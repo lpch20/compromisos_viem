@@ -24,16 +24,23 @@ function App() {
   const [inactiveTime, setInactiveTime] = useState(0);
   const navigate = useNavigate();
 
+  const verifyToken = () => {
+    if (!token) {
+      navigate("/");
+    } else {
+      const payload = token.split(".")[1];
+      const decodedPayload = JSON.parse(atob(payload));
+
+      setAgente(decodedPayload.username);
+    }
+  };
+
   const handleChange = (e) => {
     setCedula(e.target.value);
   };
 
   const handleChangeUpdate = (e) => {
     setValueToChange(e.target.value);
-  };
-
-  const handleAgente = (e) => {
-    setAgente(e.target.value);
   };
 
   const searchUsers = async (e) => {
@@ -54,7 +61,6 @@ function App() {
       setUserData(null);
     } finally {
       setLoading(false);
-  
     }
   };
 
@@ -79,11 +85,11 @@ function App() {
     } finally {
       setLoading2(false);
       Swal.fire({
-        title: 'Compromiso Cargado',
+        title: "Compromiso Cargado",
         text: 'Para comprobar si el compromiso quedo cargado correctamente, coloque la cedula del cliente y presione buscar nuevamente, podra ver en el campo "monto de acuerdo" el acuerdo que usted ingreso',
-        icon: 'success',
-        confirmButtonText: 'Aceptar'
-      })
+        icon: "success",
+        confirmButtonText: "Aceptar",
+      });
     }
   };
 
@@ -98,12 +104,11 @@ function App() {
     } finally {
       setLoading3(false);
       Swal.fire({
-        title: 'Compromiso eliminado',
+        title: "Compromiso eliminado",
         text: 'Para comprobar si el compromiso quedo eliminado correctamente, coloque la cedula del cliente y presione buscar nuevamente, podra ver en el campo "monto de acuerdo" que existia, no se visualiza mas',
-        icon: 'success',
-        confirmButtonText: 'Aceptar'
-      })
-
+        icon: "success",
+        confirmButtonText: "Aceptar",
+      });
     }
   };
 
@@ -120,6 +125,8 @@ function App() {
   };
 
   useEffect(() => {
+    verifyToken()
+
     if (!token) {
       navigate("/");
     }
@@ -185,11 +192,7 @@ function App() {
                   </div>
                   <div className="agentCharge">
                     <h3>Cobrador que carga el compromiso</h3>
-                    <input
-                      value={agenteAdd}
-                      onChange={handleAgente}
-                      type="text"
-                    />
+                    <input disabled value={agenteAdd} type="text" />
                   </div>
                 </div>
               </div>

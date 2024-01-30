@@ -9,8 +9,6 @@ export const getUsers = async (cedula) => {
 
       },
     });
-
-    console.log(result.data);
     return result.data;
   } catch (error) {
     throw error.response.data.error;
