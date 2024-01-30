@@ -22,3 +22,24 @@
 .registerBody img{
   width: 300px;
 }
+
+.inputMail {
+  position: relative;
+}
+
+.inputMail2 {
+  position: relative;
+}
+
+.inputMail img{
+  position: absolute;
+  right: 1px;
+  top: 3px;
+  width: 20px;
+}
+.inputMail2 img{
+  position: absolute;
+  right: 2px;
+  top: 4px;
+  width: 18px;
+}

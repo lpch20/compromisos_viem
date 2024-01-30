@@ -13,6 +13,7 @@ function Login() {
   const [usernameAndMail, setUsernameAndMail] = useState("");
   const [errorUsernameAndMail, setErrorUsernameAndMail] = useState(false);
   const [buttonStyle, setbuttonStyle] = useState(false);
+  const [passwordView, setPasswordView] = useState(false);
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
@@ -31,6 +32,14 @@ function Login() {
       setErrorUsernameAndMail(true);
     } else {
       setErrorUsernameAndMail(false);
+    }
+  };
+
+  const handlePasswordView = () => {
+    if (!passwordView) {
+      setPasswordView(true);
+    } else {
+      setPasswordView(false);
     }
   };
 
@@ -108,13 +117,35 @@ function Login() {
                   ></input>
                 </div>
                 <label>Contraseña:</label>
-                <div className="inputMail">
-                  <input
-                    type="password"
-                    onChange={handlePassword}
-                    value={password}
-                  ></input>
-                </div>
+                {!passwordView ? (
+                  <div className="inputMail">
+                    <input
+                      type="password"
+                      onChange={handlePassword}
+                      value={password}
+                    ></input>
+                    <img
+                      onClick={handlePasswordView}
+                      className="eyePassword"
+                      src="/images/show_icon_153436.svg"
+                      alt=""
+                    />
+                  </div>
+                ) : (
+                  <div className="inputMail2">
+                    <input
+                      type="text"
+                      onChange={handlePassword}
+                      value={password}
+                    ></input>
+                    <img
+                      onClick={handlePasswordView}
+                      className="eyePassword"
+                      src="/images/esconder.png"
+                      alt=""
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="containerButton">

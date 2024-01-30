@@ -68,7 +68,7 @@ input[type="number"] {
 .itemsFormAgentAdd{
   align-items: center;
   background-color: #5f01d1;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 20px;
   margin-top: 20px;
   padding: 10px;
@@ -98,7 +98,7 @@ input[type="number"] {
 .subClassSearchCi{
   background-color: #5f01d1;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 20px;
   display: flex;
   flex-direction: column;
@@ -118,7 +118,7 @@ input[type="number"] {
 .agentCharge{
   background-color: #5f01d1;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 20px;
   display: flex;
   flex-direction: column;
@@ -141,7 +141,7 @@ input[type="number"] {
   color: black;
   width: 400px;
   height: 500px;
-  border-radius: 40px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
