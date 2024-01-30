@@ -14,6 +14,7 @@ function Login() {
   const [errorUsernameAndMail, setErrorUsernameAndMail] = useState(false);
   const [buttonStyle, setbuttonStyle] = useState(false);
   const [passwordView, setPasswordView] = useState(false);
+  const [ingresando, setIngresando] = useState(false);
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
@@ -78,6 +79,8 @@ function Login() {
         username: usernameValue,
       };
 
+      setIngresando(true);
+
       if (errorPassword || errorUsernameAndMail) {
         alert("Error");
       } else if ((emailValue || usernameValue) && passwordValue) {
@@ -97,6 +100,8 @@ function Login() {
           text: "font-small",
         },
       });
+    } finally {
+      setIngresando(false);
     }
   };
 
@@ -149,13 +154,23 @@ function Login() {
               </div>
             </div>
             <div className="containerButton">
-              <button
-                disabled={buttonStyle}
-                className={!buttonStyle ? "btnMain4" : "disabledBottom4"}
-                type="submit"
-              >
-                Iniciar sesion
-              </button>
+              {!ingresando ? (
+                <button
+                  disabled={buttonStyle}
+                  className={!buttonStyle ? "btnMain4" : "disabledBottom4"}
+                  type="submit"
+                >
+                  Iniciar sesion
+                </button>
+              ) : (
+                <button
+                  disabled={buttonStyle}
+                  className={!buttonStyle ? "btnMain4" : "disabledBottom4"}
+                  type="submit"
+                >
+                  Ingresando....
+                </button>
+              )}
             </div>
           </div>
         </form>
