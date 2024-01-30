@@ -12,7 +12,7 @@ function Login() {
   const [errorPassword, setErrorPassword] = useState(false);
   const [usernameAndMail, setUsernameAndMail] = useState("");
   const [errorUsernameAndMail, setErrorUsernameAndMail] = useState(false);
-  const [buttonStyle, setbuttonStyle] = useState(false);
+  // const [buttonStyle, setbuttonStyle] = useState(false);
   const [passwordView, setPasswordView] = useState(false);
   const [ingresando, setIngresando] = useState(false);
 
@@ -45,20 +45,7 @@ function Login() {
   };
 
   useEffect(() => {
-    const buttonState = () => {
-      if (
-        errorPassword ||
-        errorUsernameAndMail ||
-        usernameAndMail.trim() === "" ||
-        password.trim() === ""
-      ) {
-        setbuttonStyle(true);
-      } else {
-        setbuttonStyle(false);
-      }
-    };
 
-    buttonState();
   }, [errorPassword, errorUsernameAndMail]);
 
   const handleSubmit = async (e) => {
@@ -116,6 +103,9 @@ function Login() {
                 <label>Nombre de Usuario</label>
                 <div className="inputMail">
                   <input
+                    name="username"
+                    autoComplete="username"
+                    id="username"
                     type={"text"}
                     value={usernameAndMail}
                     onChange={handleUsername}
@@ -125,7 +115,9 @@ function Login() {
                 {!passwordView ? (
                   <div className="inputMail">
                     <input
+                      name="password"
                       type="password"
+                      autoComplete="current-password"
                       onChange={handlePassword}
                       value={password}
                     ></input>
@@ -139,6 +131,8 @@ function Login() {
                 ) : (
                   <div className="inputMail2">
                     <input
+                      name="password"
+                      autoComplete="current-password"
                       type="text"
                       onChange={handlePassword}
                       value={password}
@@ -156,16 +150,12 @@ function Login() {
             <div className="containerButton">
               {!ingresando ? (
                 <button
-                  disabled={buttonStyle}
-                  className={!buttonStyle ? "btnMain4" : "disabledBottom4"}
                   type="submit"
                 >
                   Iniciar sesion
                 </button>
               ) : (
                 <button
-                  disabled={buttonStyle}
-                  className={!buttonStyle ? "btnMain4" : "disabledBottom4"}
                   type="submit"
                 >
                   Ingresando....
