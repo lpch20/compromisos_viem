@@ -49,6 +49,9 @@ function App() {
 
     try {
       const userResult = await getUsers(cedula);
+
+      console.log(userResult)
+
       setMontoDeAcuerdo(userResult.monto_de_acuerdo);
       setCartera(userResult.carteras);
       if (userResult) {
@@ -279,7 +282,7 @@ function App() {
                     </p>
                     <p>
                       <b>Monto de acuerdo Creditel:</b>{" "}
-                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                      {" $" + Number(userData.montoDeAcuerdoCreditel).toFixed(0)}
                     </p>
                   </div>
                 ) : cartera.includes("CREDITEL") &&
@@ -303,7 +306,7 @@ function App() {
                     </p>
                     <p>
                       <b>Monto de acuerdo Cdc:</b>{" "}
-                      {" $" + Number(userData.monto_de_acuerdo).toFixed(0)}
+                      {" $" + Number(userData.montoDeAcuerdoCdc).toFixed(0)}
                     </p>
                   </div>
                 ) : cartera.includes("CREDITEL") ? (
