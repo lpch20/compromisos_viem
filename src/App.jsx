@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { getUsers } from "../API/GET_users";
+import { buscarUsuario, getUsers } from "../API/GET_users";
 import { changeUser } from "../API/PUT_users";
 import { deleteAcuerdo } from "../API/DELETE_users";
 import { useNavigate } from "react-router-dom";
@@ -49,10 +49,12 @@ function App() {
 
     try {
       const userResult = await getUsers(cedula);
+    
+      const user = await buscarUsuario(cedula)
 
       console.log(userResult)
 
-      setMontoDeAcuerdo(userResult.monto_de_acuerdo);
+      setMontoDeAcuerdo(user.monto_de_acuerdo);
       setCartera(userResult.carteras);
       if (userResult) {
         setUserData(userResult);
@@ -357,13 +359,13 @@ function App() {
             {cartera.includes("CREDITEL") &&
             cartera.includes("CREDITO DE LA CASA") ? (
               <div>
-                <label htmlFor="">Credito de la Casa</label>
+                <label htmlFor="">Creditel</label>
                 <input
                   checked={checkCdc}
                   onChange={handleCheckboxChangeCdc}
                   type="checkbox"
                 />
-                <label htmlFor="">Creditel</label>
+                <label htmlFor="">Credito de la Casa</label>
                 <input
                   checked={checkCreditel}
                   onChange={handleCheckboxChangeCreditel}
