@@ -275,15 +275,15 @@ function App() {
                       <b>Nombre:</b> {userData.nombre}
                     </p>
                     <p>
-                      <b>Contado Cdc:</b>
+                      <b>Contado Creditel:</b>
                       {" $" + Number(userData.contadoCreditel).toFixed(0)}
                     </p>
                     <p>
-                      <b>Financiar Cdc:</b>{" "}
+                      <b>Financiar Creditel:</b>{" "}
                       {" $" + Number(userData.financiarCreditel).toFixed(0)}
                     </p>
                     <p>
-                      <b>Monto de acuerdo Cdc:</b>{" "}
+                      <b>Monto de acuerdo Creditel:</b>{" "}
                       {" $" + Number(userData.montoDeAcuerdoCreditel).toFixed(0)}
                     </p>
                   </div>
@@ -299,15 +299,15 @@ function App() {
                       <b>Nombre:</b> {userData.nombre}
                     </p>
                     <p>
-                      <b>Contado Creditel:</b>
+                      <b>Contado Cdc:</b>
                       {" $" + Number(userData.contadoCdc).toFixed(0)}
                     </p>
                     <p>
-                      <b>Financiar Creditel:</b>{" "}
+                      <b>Financiar Cdc:</b>{" "}
                       {" $" + Number(userData.financiarCdc).toFixed(0)}
                     </p>
                     <p>
-                      <b>Monto de acuerdo Creditel:</b>{" "}
+                      <b>Monto de acuerdo Cdc:</b>{" "}
                       {" $" + Number(userData.montoDeAcuerdoCdc).toFixed(0)}
                     </p>
                   </div>
@@ -359,13 +359,13 @@ function App() {
             {cartera.includes("CREDITEL") &&
             cartera.includes("CREDITO DE LA CASA") ? (
               <div>
-                <label htmlFor="">Creditel</label>
+                <label htmlFor="">Credito de la Casa</label>
                 <input
                   checked={checkCdc}
                   onChange={handleCheckboxChangeCdc}
                   type="checkbox"
                 />
-                <label htmlFor="">Credito de la Casa</label>
+                <label htmlFor="">Creditel </label>
                 <input
                   checked={checkCreditel}
                   onChange={handleCheckboxChangeCreditel}
